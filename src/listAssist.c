@@ -25,12 +25,12 @@ void print_table(char *date_string, char ***tasks, int daynum)
 
 	printf("\n%12s%28s\n", "Things to do", date_string);
 	printnchar('=', 79); 
-	printf("\n%-44s%-12s%-12s%-12s\n", "Task", "Urgency", "Time", "Priority");
+	printf("\n%-43s%-12s%-12s%-12s\n", "Task", "Urgency", "Time", "Priority");
 	printnchar('=', 79);
 	for (i = 0; tasks[i]; ++i) {
 			days = (atoi(tasks[i][4]) >> daynum) & 0x01;
 			if (days)
-				printf("\n%-44s%-12s%-12s%-12s",
+				printf("\n%-43s%-12s%-12s%-12s",
 					tasks[i][0], tasks[i][1],
 					tasks[i][2], tasks[i][3]);
 	}
