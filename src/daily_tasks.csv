@@ -1,0 +1,6 @@
+#Format: task name,urgency,priority,days
+#Days 2^(daynum) where daynum is a day between 0 and 6. 0 = Sunday, 1 = Monday..
+#Sun=1, Mon=2, Tues=4, Weds=8, Thurs=16, Fri=32, Sat64
+#Below example = tidy bedroom, high urgency, low time, every day
+#Tidy Bedroom,1,1,127
+#

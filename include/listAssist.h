@@ -1,0 +1,2 @@
+#define		MAX_TASKS	100
+#define		MAX_NAME_LENGTH	100
