@@ -10,7 +10,7 @@ which days a task should be completed is used to filter out any tasks
 that are not due on the day the program is executed.
 
 If executed with no arguments, listAssist will default to the file
-./daily_tasks.csv
+$HOME/daily_tasks.csv
 
 Input files must be in the following format:
 
