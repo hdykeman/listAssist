@@ -87,25 +87,31 @@ int read_tasks(char* filename, char*** task_list)
 	int task_no, position;
 
 	task_no = position = 0;
-	daily_tasks_file = fopen(filename, "r");
-	raw_data = (char*) malloc(sizeof(char *) * MAX_TASKS * 100);
-	*raw_data = fgetc(daily_tasks_file);
-	while (*(raw_data + position) != EOF) {
-		++position;
-		*(raw_data + position) = fgetc(daily_tasks_file);
-	}
-	position = 0;
-	while (*(raw_data + position) != EOF) {
-		if (*(raw_data + position) == '#') {
+	if (daily_tasks_file = fopen(filename, "r")) {
+		raw_data = (char*) malloc(sizeof(char *) * MAX_TASKS * 100);
+		*raw_data = fgetc(daily_tasks_file);
+		while (*(raw_data + position) != EOF) {
 			++position;
-			while (*(raw_data + position) != '\n')
+			*(raw_data + position) = fgetc(daily_tasks_file);
+		}
+		position = 0;
+		while (*(raw_data + position) != EOF) {
+			if (*(raw_data + position) == '#') {
 				++position;
-			++position;
+				while (*(raw_data + position) != '\n')
+					++position;
+				++position;
+			}
+			else {
+				*(task_list + task_no) = get_task(raw_data, &position);
+				++task_no;
+			}
 		}
-		else {
-			*(task_list + task_no) = get_task(raw_data, &position);
-			++task_no;
-		}
+		return 1;
+	}
+	else {
+		printf("\nFile %s does not exist\n", filename);
+		return 0;
 	}
 }
 
@@ -124,12 +130,23 @@ int main(int argc, char** argv)
 	int task_count, daynum, position, i;
 
 	tasks = (char***) calloc(MAX_TASKS, sizeof(char ***));
-	if (argc == 1)
-		read_tasks("daily_tasks.csv", tasks);
+	if (argc == 1) {
+		char* filename;
+		filename  = (char*) malloc(sizeof(char *) * (strlen(getenv("HOME")) + strlen("/daily_tasks.csv" + 1))); 
+		strcpy(filename, getenv("HOME"));
+		strcat(filename, "/daily_tasks.csv");
+		if (!read_tasks(filename, tasks)) {
+			printf("\nError occurred\n");
+			return 1;
+		}
+	}
 	else {
 		position = 0;
 		for (i = 1; i < argc; ++i) {
-			read_tasks(argv[i], tasks + position);
+			if (!read_tasks(argv[i], tasks)) {
+				printf("\nError occurred\n");
+				return 1;
+			}
 			position += count_tasks(tasks);
 		}
 	}
